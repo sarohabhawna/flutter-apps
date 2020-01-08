@@ -1,4 +1,6 @@
 import "package:flutter/material.dart";
+import "./question.dart";
+import "./answer.dart";
 
 void main() {
   runApp(MyApp());
@@ -24,30 +26,34 @@ class _MyAppState extends State<MyApp> {
 
   @override // overides the build method of statelesswidget
   Widget build(BuildContext context) {
-    var questions = [
-      'What\'s your favorite color?',
-      'What\'s your favorite animal?',
+    const questions = const [
+      {
+        'question': 'What\'s your favorite color?',
+        'answers': ['Coral', 'Peach', 'Royal blue', 'Indigo'],
+      },
+      {
+        'question': 'What\'s your favorite animal?',
+        'answers': ['Dog', 'Koala', 'Cat', 'Unicorn'],
+      },
+      {
+        'question': 'What\'s your favorite instruction?',
+        'answers': ['Max', 'Brad', "V", 'Manu'],
+      },
     ];
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('My first app.'),
+          backgroundColor: Colors.teal,
         ),
         body: Column(
           children: [
-            Text(questions[_questionIndex]),
-            RaisedButton(
-              child: Text('Answer 1'),
-              onPressed: _answerQuestion,
-            ),
-            RaisedButton(
-              child: Text('Answer 2'),
-              onPressed: _answerQuestion,
-            ),
-            RaisedButton(
-              child: Text('Answer 3'),
-              onPressed: _answerQuestion,
-            ),
+            Question(questions[_questionIndex]['question']),
+            ...(questions[_questionIndex]['answers'] as List<String>)
+                .map((answer) {
+              // ... is spread operator which now adds individual elements of this list to the parent list and prevents creating a nested list
+              return Answer(_answerQuestion, answer);
+            }).toList()
           ],
         ),
       ),
